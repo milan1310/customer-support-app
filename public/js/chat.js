@@ -4,35 +4,28 @@ const $messageForm = document.querySelector('#chat-form')
 const $message_input = document.querySelector('#message')
 const $message_container = document.querySelector("#messages")
 
+
 // Options
 const { userID, id } = Qs.parse(location.search, { ignoreQueryPrefix: true })
 console.log(userID);
 
 $messageForm.addEventListener('submit', (e) => {
     e.preventDefault()
-
+    const $message_input_flag = document.querySelector('input[name="flage"]:checked');
     socket.emit('reply', {
         message: $message_input.value,
         by: 'reply',
         userID,
-        id
+        id,
+        flag:$message_input_flag.value
     }, (error) => console.log(error));
-
-    // socket.emit('message',{
-    //     message:$message_input.value,
-    //     by:'client',
-    //     userID
-    // });
-
-
-
 })
 
 socket.on('messageToClient', (msg) => {
     console.log(msg);
     const html = `
         <h4 style="display:inline;">${msg.by === "reply" ? "Admin" : "Customer"} </h4>
-        <p> ${msg.message} </p>
+        <p> ${msg.message} <span><b>FLage:- ${msg.flag}</b></span> </p> 
     `
     $message_container.insertAdjacentHTML('beforeend', html)
 })
@@ -49,7 +42,7 @@ function renderMessages() {
         msg.forEach(element => {
             const html = `
         <h4 style="display:inline;">${element.by === "reply" ? "Admin" : "Customer"} </h4>
-        <p> ${element.message} </p>
+        <p> ${element.message} <span><b>FLage:- ${element.flag}</b></span> </p>
     `
             $message_container.insertAdjacentHTML('beforeend', html)
         });

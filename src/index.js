@@ -24,14 +24,12 @@ app.use(express.static(publicDirectoryPath));
 
 app.get('/allClients',async(req,res)=>{
     const allClients = await Clients.find({})
-    console.log(allClients);
     res.json(allClients);
 });
 
 app.get('/allmessages/:userID', async(req,res)=>{
     const userID = parseInt(req.params.userID);
     const messagesList = await Clients.findOne({userID:userID},{messages:Array});
-    console.log(messagesList);
     res.json(messagesList);
 })
 
@@ -45,7 +43,8 @@ io.on('connection',(socket)=>{
     socket.on('reply', async(message)=>{
         const msgObj = {
             message:message.message,
-            by:message.by
+            by:message.by,
+            flag:message.flag
         }
         const foundUSer = await Clients.findOneAndUpdate({userID:parseInt(message.userID)} ,{"$push": {messages:msgObj}});        
         io.to(message.userID).emit('messageToClient', msgObj);
