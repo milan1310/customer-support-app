@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Select the Customer</h1>
+    <form action="/chat.html" id="allUsers">
+        
+    </form>
+    <script>
+        async function fetchUsers(){
+            const res = await fetch('http://localhost:3000/allClients');
+            return await res.json();
+        }
+        const userList =  fetchUsers();
+
+        const allUsersEL = document.querySelector("#allUsers");
+       userList.then(r => {
+       console.log(r); 
+       for (const key in r) {
+            console.log(r[key].userID); 
+            const html = `<input type="submit" name="userID" value="${r[key].userID}" /><br /><br/>`
+            allUsersEL.insertAdjacentHTML('beforeend',html);
+        }
+       });
+       
+    </script>
+</body>
+</html>
