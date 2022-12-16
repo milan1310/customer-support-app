@@ -1,6 +1,6 @@
 # Branch international
 
-### I have created this customer support application as assignment given to me for presentation for my interview present.
+### I have created this customer support application by which each customer can raise their issue.
 
 ### Tech Stack
 
